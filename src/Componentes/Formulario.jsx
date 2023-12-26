@@ -1,0 +1,88 @@
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Swal from 'sweetalert2'
+
+function Formulario() {
+  const [userName, setUserName] = useState('');
+  const [userMail, setUserMail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [userPasswordCheck, setuserPasswordCheck] = useState('');
+  const [error, setError] = useState(false);
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+
+    if(userName.trim() === '' || userMail ==='' || userPassword ==="" || userPasswordCheck ===""){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor complete todos los campos.'
+      });
+      setError(true);
+      return
+    } else if(userPassword !== userPasswordCheck){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Las contraseñas ingresadas no son iguales',
+      });
+    } else
+    Swal.fire({
+      icon: 'success',
+      title: 'Formulario enviado exitosamente',
+      showConfirmButton: false,
+      timer: 3000
+    })
+    setError(false);
+    return
+  };
+
+  return (
+    <>
+    <h1 className= "p-2 text-center">Crear Tu Cuenta</h1>
+    <Form
+     className='p-2'
+     onSubmit={handleSubmit}
+     >
+      { error? <p className="text-center text-danger">Debes completar todos los campos</p> : null }
+    <Form.Group className="mb-3" controlId="formBasicInput">
+        <Form.Control
+        onChange={(e)=> setUserName(e.target.value)}
+        type="text"
+        placeholder="Nombre"
+         />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Control
+        onChange={(e)=> setUserMail(e.target.value)}
+        type="email"
+        placeholder="tucorreo@ejemplo.com" />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Control
+        onChange={(e)=> setUserPassword(e.target.value)}
+        type="password"
+        placeholder="Contraseña"
+         />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicPasswordCheck">
+        <Form.Control
+        onChange={(e)=> setuserPasswordCheck(e.target.value)}
+        type="password"
+        placeholder="Confirma tu Contraseña" />
+      </Form.Group>
+      <Button className='align-center'
+        variant="success"
+        type="submit"
+        value="submit"
+        >
+        
+        Registarse
+      </Button> 
+    </Form>
+    </>
+  )
+}
+
+export default Formulario
